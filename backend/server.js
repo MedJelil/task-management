@@ -1,12 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const db = require("./utils/db");
-// const authRoutes = require("./routes/authRoutes");
-// const clientRoutes = require("./routes/clientRoutes");
-// const intervenantRoutes = require("./routes/intervenantRoutes");
-// const interventionRoutes = require("./routes/interventionRoutes");
 const routes = require("./routes");
+const path = require("path");
 
 const app = express();
 app.use(cors());
@@ -14,17 +10,18 @@ app.use(bodyParser.json());
 
 app.use("/api", routes);
 
-// db.sequelize.sync().then(() => {
-//   app.listen(3000, () => console.log("Server running on port 3000"));
-// });
+// Serve static files from the frontend folder
+app.use(express.static(path.join(__dirname, "../frontend"))); // Path to the frontend folder
 
-// Routes
-// app.use("/api/auth", authRoutes);
-// app.use("/api/clients", clientRoutes);
-// app.use("/api/intervenants", intervenantRoutes);
-// app.use("/api/interventions", interventionRoutes);
+// Your API routes
+app.use("/api", routes);
 
-const PORT = 3000;
+// Default route to serve the frontend
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend", "index.html")); // Adjust path if necessary
+});
+
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
