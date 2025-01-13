@@ -2,14 +2,14 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "intervenant",
     {
-      IdIntervenant: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      Nom: { type: DataTypes.STRING, allowNull: false },
-      Prenom: { type: DataTypes.STRING, allowNull: false },
-      Poste: { type: DataTypes.STRING, allowNull: false },
+      nom: { type: DataTypes.STRING, allowNull: false },
+      prenom: { type: DataTypes.STRING, allowNull: false },
+      poste: { type: DataTypes.STRING, allowNull: false },
     },
     {
       freezeTableName: true, // Prevents pluralizing table name
