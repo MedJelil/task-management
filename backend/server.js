@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use("/api", routes);
 
 // Serve static files from the frontend folder
-app.use(express.static(path.join(__dirname, "../frontend"))); // Path to the frontend folder
+app.use(express.static(path.join(__dirname, "../frontend/pages"))); // Path to the frontend folder
 
 // Your API routes
 app.use("/api", routes);
