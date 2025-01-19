@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intervenants</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      #intervenants-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      .intervenant {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Liste des Intervenants</h1>
+    <ul id="intervenants-list"></ul>
+
+    <script>
+      // Fetch data and display it in the HTML
+      fetch("http://localhost:3000/api/intervenants", {
+        method: "GET", // HTTP method
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json(); // Parse the JSON response
+        })
+
+        .then((data) => {
+          const listElement = document.getElementById("intervenants-list");
+
+          // Loop through the data and create HTML for each item
+          data.forEach((intervenant) => {
+            const item = document.createElement("li");
+            item.className = "intervenant";
+            item.innerHTML = `
+        <strong>ID:</strong> ${intervenant.id}<br>
+        <strong>Nom:</strong> ${intervenant.nom}<br>
+        <strong>Prénom:</strong> ${intervenant.prenom}<br>
+        <strong>Poste:</strong> ${intervenant.poste}
+      `;
+            listElement.appendChild(item);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    </script>
+  </body>
+</html>
