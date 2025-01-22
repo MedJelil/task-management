@@ -3,60 +3,136 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Intervenants</title>
+    <title>Gestion des Intervenants</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-      }
-      #intervenants-list {
-        list-style-type: none;
+        font-family: "Poppins", sans-serif;
+        margin: 0;
         padding: 0;
+        background: #f4f4f9;
+        color: #333;
+        text-align: center;
       }
-      .intervenant {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin: 10px 0;
+      h1 {
+        margin-top: 20px;
+        font-size: 2.5em;
+        color: #2c3e50;
+      }
+      .container {
+        margin: 50px auto;
+        max-width: 800px;
+      }
+      .nav {
+        margin-bottom: 20px;
+      }
+      .nav a {
+        text-decoration: none;
+        color: #fff;
+        background: #2980b9;
+        padding: 15px 25px;
         border-radius: 5px;
-        background-color: #f9f9f9;
+        margin: 0 10px;
+      }
+      .nav a:hover {
+        background: #1f618d;
+      }
+      .table-container {
+        padding: 40px;
+        background: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 15px;
+        border: 1px solid #ccc;
+        text-align: left;
+      }
+      th {
+        background-color: #2980b9;
+        color: white;
+      }
+      .action-btn {
+        cursor: pointer;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-right: 5px;
+      }
+      .edit-btn {
+        background-color: #f1c40f;
+      }
+      .delete-btn {
+        background-color: #e74c3c;
       }
     </style>
   </head>
   <body>
-    <h1>Liste des Intervenants</h1>
-    <ul id="intervenants-list"></ul>
+    <h1>Gestion des Intervenants</h1>
+    <div class="container">
+      <div class="nav">
+        <a href="./fomulaire.html">Ajouter un intervenant</a>
+      </div>
+      <div class="table-container">
+        <table id="intervenants-list">
+          <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Poste</th>
+            <th>Actions</th>
+          </tr>
+        </table>
+      </div>
+    </div>
 
     <script>
-      // Fetch data and display it in the HTML
-      fetch("http://localhost:3000/api/intervenants", {
-        method: "GET", // HTTP method
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json(); // Parse the JSON response
-        })
-
-        .then((data) => {
-          const listElement = document.getElementById("intervenants-list");
-
-          // Loop through the data and create HTML for each item
-          data.forEach((intervenant) => {
-            const item = document.createElement("li");
-            item.className = "intervenant";
-            item.innerHTML = `
-                <strong>ID:</strong> ${intervenant.id}<br>
-                <strong>Nom:</strong> ${intervenant.nom}<br>
-                <strong>Prénom:</strong> ${intervenant.prenom}<br>
-                <strong>Poste:</strong> ${intervenant.poste}
+      function fetchIntervenants() {
+        fetch("http://localhost:3000/api/intervenants")
+          .then((response) => response.json())
+          .then((data) => {
+            const listElement = document.getElementById("intervenants-list");
+            listElement.innerHTML = `
+              <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Poste</th>
+                <th>Actions</th>
+              </tr>
             `;
-            listElement.appendChild(item);
-          });
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
+            data.forEach((intervenant) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                <td>${intervenant.id}</td>
+                <td>${intervenant.nom}</td>
+                <td>${intervenant.prenom}</td>
+                <td>${intervenant.poste}</td>
+                <td>
+                  <button class="action-btn edit-btn" onclick="editIntervenant(${intervenant.id})">Modifier</button>
+                  <button class="action-btn delete-btn" onclick="deleteIntervenant(${intervenant.id})">Supprimer</button>
+                </td>
+              `;
+              listElement.appendChild(row);
+            });
+          })
+          .catch((error) => console.error("Error fetching data:", error));
+      }
+
+      function deleteIntervenant(id) {
+        if (confirm("Voulez-vous vraiment supprimer cet intervenant ?")) {
+          fetch(`http://localhost:3000/api/intervenants/${id}`, {
+            method: "DELETE",
+          }).then(() => fetchIntervenants());
+        }
+      }
+
+      fetchIntervenants();
     </script>
   </body>
 </html>
