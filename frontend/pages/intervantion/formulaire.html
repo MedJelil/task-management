@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ajouter / Modifier une Intervention</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f9;
+        text-align: center;
+        padding: 20px;
+      }
+      h1 {
+        color: #2c3e50;
+      }
+      .form-container {
+        max-width: 400px;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+      input,
+      select {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="form-title">Ajouter une Intervention</h1>
+    <div class="form-container">
+      <form id="intervention-form">
+        <input type="date" id="intervention-date" required />
+        <select id="intervention-type" required>
+          <option value="">Sélectionnez un type</option>
+          <option value="soft">Logiciel</option>
+          <option value="hard">Matériel</option>
+        </select>
+        <input
+          type="text"
+          id="intervention-motive"
+          placeholder="Motif"
+          required
+        />
+        <select id="intervention-status" required>
+          <option value="">Sélectionnez un statut</option>
+          <option value="pending">En attente</option>
+          <option value="completed">Complétée</option>
+        </select>
+        <input
+          type="number"
+          id="intervention-intervenantId"
+          placeholder="ID Intervenant"
+          required
+        />
+        <input
+          type="number"
+          id="intervention-clientId"
+          placeholder="ID Client"
+          required
+        />
+        <button type="submit" id="submit-btn">Enregistrer</button>
+      </form>
+    </div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const interventionId = urlParams.get("id");
+
+      if (interventionId) {
+        document.getElementById("form-title").innerText =
+          "Modifier une Intervention";
+        document.getElementById("submit-btn").innerText = "Mettre à jour";
+
+        fetch(`http://localhost:3000/api/interventions/${interventionId}`)
+          .then((response) => response.json())
+          .then((intervention) => {
+            document.getElementById("intervention-date").value =
+              intervention.date;
+            document.getElementById("intervention-type").value =
+              intervention.type;
+            document.getElementById("intervention-motive").value =
+              intervention.motive;
+            document.getElementById("intervention-status").value =
+              intervention.status;
+            document.getElementById("intervention-intervenantId").value =
+              intervention.intervenantId;
+            document.getElementById("intervention-clientId").value =
+              intervention.clientId;
+          })
+          .catch((error) => console.error("Erreur:", error));
+      }
+
+      document
+        .getElementById("intervention-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const date = document.getElementById("intervention-date").value;
+          const type = document.getElementById("intervention-type").value;
+          const motive = document.getElementById("intervention-motive").value;
+          const status = document.getElementById("intervention-status").value;
+          const intervenantId = document.getElementById(
+            "intervention-intervenantId"
+          ).value;
+          const clientId = document.getElementById(
+            "intervention-clientId"
+          ).value;
+
+          const method = interventionId ? "PUT" : "POST";
+          const url = interventionId
+            ? `http://localhost:3000/api/interventions/${interventionId}`
+            : "http://localhost:3000/api/interventions";
+
+          fetch(url, {
+            method: method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              date,
+              type,
+              motive,
+              status,
+              intervenantId,
+              clientId,
+            }),
+          })
+            .then((response) => response.json())
+            .then(() => {
+              alert(
+                interventionId
+                  ? "Intervention mise à jour !"
+                  : "Intervention ajoutée !"
+              );
+              window.location.href = "./index.html";
+            })
+            .catch((error) => console.error("Erreur:", error));
+        });
+    </script>
+  </body>
+</html>
