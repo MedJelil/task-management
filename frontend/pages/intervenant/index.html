@@ -1,85 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestion des Intervenants</title>
-    <style>
-      body {
-        font-family: "Poppins", sans-serif;
-        margin: 0;
-        padding: 0;
-        background: #f4f4f9;
-        color: #333;
-        text-align: center;
-      }
-      h1 {
-        margin-top: 20px;
-        font-size: 2.5em;
-        color: #2c3e50;
-      }
-      .container {
-        margin: 50px auto;
-        max-width: 800px;
-      }
-      .nav {
-        margin-bottom: 20px;
-      }
-      .nav a {
-        text-decoration: none;
-        color: #fff;
-        background: #2980b9;
-        padding: 15px 25px;
-        border-radius: 5px;
-        margin: 0 10px;
-      }
-      .nav a:hover {
-        background: #1f618d;
-      }
-      .table-container {
-        padding: 40px;
-        background: #fff;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      th,
-      td {
-        padding: 15px;
-        border: 1px solid #ccc;
-        text-align: left;
-      }
-      th {
-        background-color: #2980b9;
-        color: white;
-      }
-      .action-btn {
-        cursor: pointer;
-        color: #fff;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        margin-right: 5px;
-      }
-      .edit-btn {
-        background-color: #f1c40f;
-      }
-      .delete-btn {
-        background-color: #e74c3c;
-      }
-    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="../css/mainStyle.css" />
   </head>
   <body>
-    <h1>Gestion des Intervenants</h1>
     <div class="container">
-      <div class="nav">
-        <a href="./fomulaire.html">Ajouter un intervenant</a>
-      </div>
-      <div class="table-container">
-        <table id="intervenants-list">
+      <header>
+        <h1>Gestion des Intervenants</h1>
+        <div class="search-container">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Rechercher un intervenant..."
+          />
+          <i class="bx bx-search"></i>
+        </div>
+        <button id="addIntervenantBtn" class="btn-primary">
+          Ajouter un Intervenant
+        </button>
+      </header>
+      <table>
+        <thead>
           <tr>
             <th>ID</th>
             <th>Nom</th>
@@ -87,65 +40,52 @@
             <th>Poste</th>
             <th>Actions</th>
           </tr>
-        </table>
+        </thead>
+        <tbody id="intervenantTableBody">
+          <!-- Rows will be populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal for adding/editing intervenant -->
+    <div id="intervenantModal" class="modal">
+      <div class="modal-content">
+        <h2 id="modalIntervenantTitle">Ajouter un Intervenant</h2>
+        <form id="intervenantForm">
+          <input
+            type="text"
+            id="nomIntervenantInput"
+            placeholder="Nom"
+            required
+          />
+          <input
+            type="text"
+            id="prenomIntervenantInput"
+            placeholder="Prénom"
+            required
+          />
+          <input
+            type="text"
+            id="posteIntervenantInput"
+            placeholder="Poste"
+            required
+          />
+          <div class="btns-container">
+            <button
+              type="button"
+              id="closeIntervenantModal"
+              class="btn-secondary"
+            >
+              Annuler
+            </button>
+            <button type="submit" id="submitIntervenantBtn" class="btn-primary">
+              Enregistrer
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 
-    <script>
-      function fetchIntervenants() {
-        fetch("http://localhost:3000/api/intervenants")
-          .then((response) => response.json())
-          .then((data) => {
-            const listElement = document.getElementById("intervenants-list");
-            listElement.innerHTML = `
-              <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Poste</th>
-                <th>Actions</th>
-              </tr>
-            `;
-            data.forEach((intervenant) => {
-              const row = document.createElement("tr");
-              row.innerHTML = `
-                <td>${intervenant.id}</td>
-                <td>${intervenant.nom}</td>
-                <td>${intervenant.prenom}</td>
-                <td>${intervenant.poste}</td>
-                <td>
-                  <button class="action-btn edit-btn" onclick="editIntervenant(${intervenant.id})">Modifier</button>
-                  <button class="action-btn delete-btn" onclick="deleteIntervenant(${intervenant.id})">Supprimer</button>
-                </td>
-              `;
-              listElement.appendChild(row);
-            });
-          })
-          .catch((error) =>
-            console.error("Erreur lors du chargement :", error)
-          );
-      }
-
-      function editIntervenant(id) {
-        window.location.href = `./fomulaire.html?id=${id}`;
-      }
-
-      function deleteIntervenant(id) {
-        if (confirm("Voulez-vous vraiment supprimer cet intervenant ?")) {
-          fetch(`http://localhost:3000/api/intervenants/${id}`, {
-            method: "DELETE",
-          })
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error("Erreur lors de la suppression");
-              }
-              fetchIntervenants();
-            })
-            .catch((error) => console.error("Erreur :", error));
-        }
-      }
-
-      fetchIntervenants();
-    </script>
+    <script src="../js/intervenant.js"></script>
   </body>
 </html>
