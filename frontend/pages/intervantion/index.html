@@ -68,8 +68,13 @@
             <option value="hard">Hard</option>
           </select>
 
-          <label for="statusInterventionInput">Statut</label>
-          <select id="statusInterventionInput" required>
+          <label
+            for="statusInterventionInput"
+            id="statusLabel"
+            style="display: none"
+            >Statut</label
+          >
+          <select id="statusInterventionInput" style="display: none" required>
             <option value="pending">En attente</option>
             <option value="completed">Terminée</option>
           </select>

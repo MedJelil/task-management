@@ -248,28 +248,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   function openInterventionModal(intervention = null) {
+    const statusField = document.getElementById("statusInterventionInput");
+  
     if (intervention) {
+      // Mode Modification
       modalInterventionTitle.textContent = "Modifier Intervention";
       submitInterventionBtn.textContent = "Mettre à jour";
-      document.getElementById("dateInterventionInput").value =
-        intervention.date.split("T")[0];
-      document.getElementById("typeInterventionInput").value =
-        intervention.type;
-      document.getElementById("motiveInterventionInput").value =
-        intervention.motive;
-      document.getElementById("statusInterventionInput").value =
-        intervention.status;
-      document.getElementById("intervenantIdInterventionInput").value =
-        intervention.intervenantId;
-      document.getElementById("clientIdInterventionInput").value =
-        intervention.clientId;
+      document.getElementById("dateInterventionInput").value = intervention.date.split("T")[0];
+      document.getElementById("typeInterventionInput").value = intervention.type;
+      document.getElementById("motiveInterventionInput").value = intervention.motive;
+      document.getElementById("statusInterventionInput").value = intervention.status;
+      document.getElementById("intervenantIdInterventionInput").value = intervention.intervenantId;
+      document.getElementById("clientIdInterventionInput").value = intervention.clientId;
+  
+      // Afficher le statut lors de la modification
+      statusField.style.display = "block";
     } else {
+      // Mode Ajout
       modalInterventionTitle.textContent = "Ajouter une Intervention";
       submitInterventionBtn.textContent = "Ajouter";
+      
+      // Cacher le statut et le définir par défaut
+      statusField.style.display = "none";
+      statusField.value = "pending";
     }
+  
     interventionModal.style.display = "flex";
-    console.log("opened");
   }
+  console.log("opened");
+
 
   function resetForm() {
     interventionForm.reset();
