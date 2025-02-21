@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "intervention",
     {
-      Id: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         references: {
           model: "intervenant",
-          key: "IdIntervenant",
+          key: "id",
         },
       },
       clientId: {
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         references: {
           model: "client",
-          key: "IdClient",
+          key: "id",
         },
       },
     },

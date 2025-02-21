@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   let interventions = [];
+  let interventionsToExport = interventions;
   let editingInterventionId = null;
   let intervenants = [];
   let clients = [];
@@ -249,37 +250,93 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   function openInterventionModal(intervention = null) {
     const statusField = document.getElementById("statusInterventionInput");
-  
+
     if (intervention) {
       // Mode Modification
       modalInterventionTitle.textContent = "Modifier Intervention";
       submitInterventionBtn.textContent = "Mettre à jour";
-      document.getElementById("dateInterventionInput").value = intervention.date.split("T")[0];
-      document.getElementById("typeInterventionInput").value = intervention.type;
-      document.getElementById("motiveInterventionInput").value = intervention.motive;
-      document.getElementById("statusInterventionInput").value = intervention.status;
-      document.getElementById("intervenantIdInterventionInput").value = intervention.intervenantId;
-      document.getElementById("clientIdInterventionInput").value = intervention.clientId;
-  
+      document.getElementById("dateInterventionInput").value =
+        intervention.date.split("T")[0];
+      document.getElementById("typeInterventionInput").value =
+        intervention.type;
+      document.getElementById("motiveInterventionInput").value =
+        intervention.motive;
+      document.getElementById("statusInterventionInput").value =
+        intervention.status;
+      document.getElementById("intervenantIdInterventionInput").value =
+        intervention.intervenantId;
+      document.getElementById("clientIdInterventionInput").value =
+        intervention.clientId;
+
       // Afficher le statut lors de la modification
       statusField.style.display = "block";
     } else {
       // Mode Ajout
       modalInterventionTitle.textContent = "Ajouter une Intervention";
       submitInterventionBtn.textContent = "Ajouter";
-      
+
       // Cacher le statut et le définir par défaut
       statusField.style.display = "none";
       statusField.value = "pending";
     }
-  
+
     interventionModal.style.display = "flex";
   }
   console.log("opened");
-
 
   function resetForm() {
     interventionForm.reset();
     editingInterventionId = null;
   }
+
+  // Export PDF functionality
+  const exportPdfBtn = document.getElementById("exportPdfBtn");
+
+  exportPdfBtn.addEventListener("click", () => {
+    if (interventionsToExport.length === 0) {
+      Swal.fire("Info", "No interventions to export!", "info");
+      return;
+    }
+
+    const doc = new jspdf.jsPDF();
+
+    // Add title
+    doc.setFontSize(18);
+    doc.text("Interventions List", 14, 22);
+    doc.setFontSize(12);
+    doc.setTextColor(100);
+    doc.text(new Date().toLocaleDateString(), 14, 28);
+
+    // Create table data
+    const tableData = interventionsToExport.map((intervention) => [
+      intervention.id,
+      intervention.motive,
+      intervention.status,
+      intervention.intervenant.nom,
+      intervention.client.nom,
+      new Date(intervention.date).toLocaleDateString(),
+      intervention.type,
+    ]);
+
+    // AutoTable configuration
+    doc.autoTable({
+      head: [
+        ["ID", "Motif", "Statut", "Intervenant", "Client", "Date", "Type"],
+      ],
+      body: tableData,
+      startY: 35,
+      theme: "grid",
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+      columnStyles: {
+        0: { cellWidth: 20 },
+        1: { cellWidth: 40 },
+        2: { cellWidth: 40 },
+        3: { cellWidth: 60 },
+      },
+    });
+
+    // Save the PDF
+    doc.save(`interventions_${new Date().toISOString().split("T")[0]}.pdf`);
+  });
 });

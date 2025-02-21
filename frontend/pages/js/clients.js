@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("submitBtn");
 
   let clients = [];
+  let clientsToExport = clients;
   let editingClientId = null;
 
   // Function to fetch all clients
@@ -69,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         client.prenom.toLowerCase().includes(searchTerm) ||
         client.direction.toLowerCase().includes(searchTerm)
     );
+    clientsToExport = filteredClients;
     renderClients(filteredClients);
   });
 
@@ -209,4 +211,50 @@ document.addEventListener("DOMContentLoaded", () => {
     clientForm.reset();
     editingClientId = null;
   }
+
+  // Export PDF functionality
+  const exportPdfBtn = document.getElementById("exportPdfBtn");
+
+  exportPdfBtn.addEventListener("click", () => {
+    if (clientsToExport.length === 0) {
+      Swal.fire("Info", "No clients to export!", "info");
+      return;
+    }
+
+    const doc = new jspdf.jsPDF();
+
+    // Add title
+    doc.setFontSize(18);
+    doc.text("Client List", 14, 22);
+    doc.setFontSize(12);
+    doc.setTextColor(100);
+    doc.text(new Date().toLocaleDateString(), 14, 28);
+
+    // Create table data
+    const tableData = clientsToExport.map((client) => [
+      client.id,
+      client.nom,
+      client.prenom,
+      client.direction,
+    ]);
+
+    // AutoTable configuration
+    doc.autoTable({
+      head: [["ID", "Nom", "Prenom", "Direction"]],
+      body: tableData,
+      startY: 35,
+      theme: "grid",
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+      columnStyles: {
+        0: { cellWidth: 20 },
+        1: { cellWidth: 40 },
+        2: { cellWidth: 40 },
+        3: { cellWidth: 60 },
+      },
+    });
+
+    // Save the PDF
+    doc.save(`clients_${new Date().toISOString().split("T")[0]}.pdf`);
+  });
 });

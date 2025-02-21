@@ -1,0 +1,214 @@
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #f5f7fa;
+  --ghost-color: #eee;
+  --text-color: #333;
+  --border-color: #e1e4e8;
+  --background-color: #ffffff;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+  --primary-color: #4a90e2; /* Keeping the same for consistency */
+  --secondary-color: #1e1e1e; /* Darker neutral for background elements */
+  --ghost-color: #2a2d31; /* Softer dark gray for subtle elements */
+  --text-color: #e0e0e0; /* Light gray for readability */
+  --border-color: #3a3d41; /* Dark gray for subtle borders */
+  --background-color: #121212; /* Deep dark background */
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+nav {
+  background-color: var(--primary-color);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin-right: 1rem;
+}
+
+nav ul li a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.profile-icon {
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+main {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.button-container {
+  display: flex;
+  margin-left: 20%;
+  margin-right: 20%;
+  justify-content: space-around;
+}
+
+.large-button {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.large-button:hover {
+  background-color: #3a80d2;
+}
+
+.chart-container {
+  display: flex;
+  gap: 2rem;
+  height: 400px;
+  padding-bottom: 4rem;
+  justify-content: space-between;
+}
+
+.chart {
+  width: 100%;
+  height: 100%;
+  background-color: var(--ghost-color);
+  border-radius: 8px;
+  padding: 1rem 1rem 3.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chart h2 {
+  margin-top: 0;
+  color: var(--text-color);
+}
+
+body.dark-mode #theme-toggle {
+  color: var(--text-color);
+}
+
+body.dark-mode .large-button {
+  background-color: #3a80d2;
+}
+
+body.dark-mode .large-button:hover {
+  background-color: #2a70c2;
+}
+
+/* From Uiverse.io by rishichawda */
+/* The switch - the box around the slider */
+#theme-toggle {
+  font-size: 17px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 3em;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+/* Hide default HTML checkbox */
+#toggle {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+#container,
+#patches,
+#stars,
+#button,
+#sun,
+#moon,
+#cloud {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.25s;
+}
+
+/* night sky background */
+#toggle:checked + svg #container {
+  fill: #2b4360;
+}
+
+/* move button to right when checked */
+#toggle:checked + svg #button {
+  transform: translate(28px, 2.333px);
+}
+
+/* show/hide sun and moon based on checkbox state */
+#sun {
+  opacity: 1;
+}
+
+#toggle:checked + svg #sun {
+  opacity: 0;
+}
+
+#moon {
+  opacity: 0;
+}
+
+#toggle:checked + svg #moon {
+  opacity: 1;
+}
+
+/* show or hide background items on checkbox state */
+#cloud {
+  opacity: 1;
+}
+
+#toggle:checked + svg #cloud {
+  opacity: 0;
+}
+
+#stars {
+  opacity: 0;
+}
+
+#toggle:checked + svg #stars {
+  opacity: 1;
+}

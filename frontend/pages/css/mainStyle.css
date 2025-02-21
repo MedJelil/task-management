@@ -1,15 +1,74 @@
 :root {
   --primary-color: #4a90e2;
   --secondary-color: #f5f7fa;
+  --secondary-hover-color: #d1d4d8;
   --ghost-color: #eee;
   --text-color: #333;
   --border-color: #e1e4e8;
+  --background-color: #f8f9fa;
+  --table-background: #fff;
+  --secondary-table-background: #f8f9fa;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+  --primary-color: #4a90e2; /* Keeping the same for consistency */
+  --secondary-color: #1e1e1e; /* Darker neutral for background elements */
+  --secondary-hover-color: #2e2e2e;
+  --ghost-color: #eee; /* Softer dark gray for subtle elements */
+  --text-color: #e0e0e0; /* Light gray for readability */
+  --border-color: #3a3d41; /* Dark gray for subtle borders */
+  --background-color: #121212; /* Deep dark background */
+  --table-background: #101010;
+  --secondary-table-background: #08090a;
+}
+
+nav {
+  background-color: var(--primary-color);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin-right: 1rem;
+}
+
+nav ul li a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.profile-icon {
+  font-size: 1.5rem;
+  color: var(--secondary-color);
 }
 
 body {
@@ -60,7 +119,7 @@ h1 {
 
 .btn-primary {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--secondary-color);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -79,7 +138,7 @@ h1 {
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
+  background-color: var(--table-background);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
@@ -94,7 +153,7 @@ td {
 
 th {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--table-background);
   font-weight: 500;
 }
 
@@ -103,7 +162,7 @@ tr:last-child td {
 }
 
 tr:nth-child(even) {
-  background-color: #f8f9fa;
+  background-color: var(--secondary-table-background);
 }
 
 .modal {
@@ -120,7 +179,7 @@ tr:nth-child(even) {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: var(--background-color);
   padding: 2rem;
   border-radius: 8px;
   width: 80%;
@@ -163,7 +222,7 @@ select {
 }
 
 .btn-secondary {
-  background-color: #e1e4e8;
+  background-color: var(--secondary-color);
   color: var(--text-color);
   border: none;
   padding: 0.5rem 1rem;
@@ -173,7 +232,7 @@ select {
 }
 
 .btn-secondary:hover {
-  background-color: #d1d4d8;
+  background-color: var(--secondary-hover-color);
 }
 
 .btns-container {
@@ -195,19 +254,8 @@ select {
   transition: background-color 0.3s ease;
 }
 
-.btn-edit {
-  /* background-color: #ffc107; */
-  /* color: #000;
-  margin-right: 0.5rem; */
-}
-
 .btn-edit:hover {
   background-color: #ffb300;
-}
-
-.btn-remove {
-  /* background-color: #dc3545; */
-  /* color: #fff; */
 }
 
 .btn-remove:hover {
@@ -224,4 +272,79 @@ i {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* From Uiverse.io by rishichawda */
+/* The switch - the box around the slider */
+#theme-toggle {
+  font-size: 17px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 3em;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+/* Hide default HTML checkbox */
+#toggle {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+#container,
+#patches,
+#stars,
+#button,
+#sun,
+#moon,
+#cloud {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.25s;
+}
+
+/* night sky background */
+#toggle:checked + svg #container {
+  fill: #2b4360;
+}
+
+/* move button to right when checked */
+#toggle:checked + svg #button {
+  transform: translate(28px, 2.333px);
+}
+
+/* show/hide sun and moon based on checkbox state */
+#sun {
+  opacity: 1;
+}
+
+#toggle:checked + svg #sun {
+  opacity: 0;
+}
+
+#moon {
+  opacity: 0;
+}
+
+#toggle:checked + svg #moon {
+  opacity: 1;
+}
+
+/* show or hide background items on checkbox state */
+#cloud {
+  opacity: 1;
+}
+
+#toggle:checked + svg #cloud {
+  opacity: 0;
+}
+
+#stars {
+  opacity: 0;
+}
+
+#toggle:checked + svg #stars {
+  opacity: 1;
 }

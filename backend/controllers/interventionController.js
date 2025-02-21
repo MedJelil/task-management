@@ -1,4 +1,4 @@
-const { Intervention, Intervenant, Client } = require("../models");
+const { Intervention, Intervenant, Client, sequelize } = require("../models");
 
 exports.createIntervention = async (req, res) => {
   try {
@@ -66,5 +66,83 @@ exports.deleteIntervention = async (req, res) => {
     }
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+};
+
+exports.getStatistics = async (req, res) => {
+  try {
+    // Fetch top 5 clients
+    const topClients = await Client.findAll({
+      attributes: [
+        [
+          sequelize.fn(
+            "CONCAT",
+            sequelize.col("nom"),
+            " ",
+            sequelize.col("prenom")
+          ),
+          "fullName",
+        ],
+        [
+          sequelize.fn("COUNT", sequelize.col("interventions.id")),
+          "interventionCount",
+        ],
+      ],
+      include: [
+        {
+          model: Intervention,
+          attributes: [],
+          required: false, // Use LEFT JOIN
+        },
+      ],
+      group: ["client.id"],
+      order: [[sequelize.literal("interventionCount"), "DESC"]],
+      limit: 5,
+      subQuery: false, // Prevent nested subqueries
+    });
+
+    // Fetch top 5 intervenants
+    const topIntervenants = await Intervenant.findAll({
+      attributes: [
+        [
+          sequelize.fn(
+            "CONCAT",
+            sequelize.col("nom"),
+            " ",
+            sequelize.col("prenom")
+          ),
+          "fullName",
+        ],
+        [
+          sequelize.fn("COUNT", sequelize.col("interventions.id")),
+          "interventionCount",
+        ],
+      ],
+      include: [
+        {
+          model: Intervention,
+          attributes: [],
+          required: false, // Use LEFT JOIN
+        },
+      ],
+      group: ["intervenant.id"],
+      order: [[sequelize.literal("interventionCount"), "DESC"]],
+      limit: 5,
+      subQuery: false, // Prevent nested subqueries
+    });
+
+    // Fetsh intervention status counts
+    const statusCounts = await Intervention.findAll({
+      attributes: [
+        "status",
+        [sequelize.fn("COUNT", sequelize.col("id")), "count"],
+      ],
+      group: ["status"],
+    });
+
+    res.status(200).json({ topClients, topIntervenants, statusCounts });
+  } catch (err) {
+    console.error("Error fetching top clients and intervenants:", err);
+    res.status(500).json({ error: "An error occurred while fetching data." });
   }
 };
