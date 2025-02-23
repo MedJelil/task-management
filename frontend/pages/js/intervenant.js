@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitIntervenantBtn = document.getElementById("submitIntervenantBtn");
 
   let intervenants = [];
+  let intervenantsToExport = intervenants;
+
   let editingIntervenantId = null;
 
   async function fetchIntervenants() {
@@ -30,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderIntervenants(intervenantsToRender) {
     intervenantTableBody.innerHTML = "";
+    intervenantsToExport = intervenantsToRender;
     intervenantsToRender.forEach((intervenant) => {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -200,8 +203,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const exportPdfBtn = document.getElementById("exportPdfBtn");
 
   exportPdfBtn.addEventListener("click", () => {
-    if (clientsToExport.length === 0) {
-      Swal.fire("Info", "No clients to export!", "info");
+    if (intervenantsToExport.length === 0) {
+      Swal.fire("Info", "No intervenants to export!", "info");
       return;
     }
 
@@ -209,22 +212,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add title
     doc.setFontSize(18);
-    doc.text("Client List", 14, 22);
+    doc.text("intervenant List", 14, 22);
     doc.setFontSize(12);
     doc.setTextColor(100);
     doc.text(new Date().toLocaleDateString(), 14, 28);
 
     // Create table data
-    const tableData = clientsToExport.map((client) => [
-      client.id,
-      client.nom,
-      client.prenom,
-      client.direction,
+    const tableData = intervenantsToExport.map((intervenant) => [
+      intervenant.id,
+      intervenant.nom,
+      intervenant.prenom,
+      intervenant.poste,
     ]);
 
     // AutoTable configuration
     doc.autoTable({
-      head: [["ID", "Nom", "Prenom", "Direction"]],
+      head: [["ID", "Nom", "Prenom", "Poste"]],
       body: tableData,
       startY: 35,
       theme: "grid",
@@ -234,11 +237,11 @@ document.addEventListener("DOMContentLoaded", () => {
         0: { cellWidth: 20 },
         1: { cellWidth: 40 },
         2: { cellWidth: 40 },
-        3: { cellWidth: 60 },
+        3: { cellWidth: 80 },
       },
     });
 
     // Save the PDF
-    doc.save(`clients_${new Date().toISOString().split("T")[0]}.pdf`);
+    doc.save(`intervenants_${new Date().toISOString().split("T")[0]}.pdf`);
   });
 });

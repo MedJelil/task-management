@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to render clients
   function renderClients(clientsToRender) {
     clientTableBody.innerHTML = "";
+     clientsToExport = clientsToRender;
     clientsToRender.forEach((client) => {
       const row = document.createElement("tr");
       row.innerHTML = `

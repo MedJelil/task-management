@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderInterventions(interventionsToRender) {
     interventionTableBody.innerHTML = "";
+    interventionsToExport = interventionsToRender;
     interventionsToRender.forEach((intervention) => {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -329,10 +330,13 @@ document.addEventListener("DOMContentLoaded", () => {
       styles: { fontSize: 10 },
       headStyles: { fillColor: [41, 128, 185], textColor: 255 },
       columnStyles: {
-        0: { cellWidth: 20 },
+        0: { cellWidth: 10 },
         1: { cellWidth: 40 },
-        2: { cellWidth: 40 },
-        3: { cellWidth: 60 },
+        2: { cellWidth: 30 },
+        3: { cellWidth: 30 },
+        4: { cellWidth: 30 },
+        5: { cellWidth: 40 },
+        6: { cellWidth: 20 },
       },
     });
 
