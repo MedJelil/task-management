@@ -8,6 +8,10 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="../css/dashboard.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
@@ -208,18 +212,61 @@
             </g>
           </svg>
         </label>
-        <div class="profile-icon">👤</div>
+        <div class="profile-container">
+          <div class="profile-icon" id="profileIcon">
+            <!-- If you have an image, use this: -->
+            <!-- <img src="user-avatar.jpg" alt="User"> -->
+
+            <!-- If no image, show initials: -->
+            <span class="initials">J</span>
+          </div>
+
+          <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-header">
+              <div class="user-name">Jelil</div>
+              <div class="user-email">jelil@admin.com</div>
+            </div>
+
+            <div class="dropdown-items">
+              <div class="dropdown-item">
+                <i>👤</i>
+                <span>Profile</span>
+              </div>
+              <div class="dropdown-item">
+                <i>❓</i>
+                <span>Help</span>
+              </div>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <a href="/" style="text-decoration: none"
+              ><div class="dropdown-item logout-item">
+                <i class="bx bx-log-out-circle"></i>
+                <span>Log out</span>
+              </div></a
+            >
+          </div>
+        </div>
       </div>
     </nav>
 
     <main>
       <div class="button-container">
-        <a href="/clients"> <button class="large-button">Client</button></a>
+        <a href="/clients">
+          <button class="large-button">
+            <span id="clientCount" class="count"></span> Clients
+          </button></a
+        >
         <a href="/intervenant"
-          ><button class="large-button">Intervenants</button></a
+          ><button class="large-button">
+            <span id="intervenantCount" class="count"></span>Intervenants
+          </button></a
         >
         <a href="/intervantion"
-          ><button class="large-button">Interventions</button></a
+          ><button class="large-button">
+            <span id="interventionCount" class="count"></span>Interventions
+          </button></a
         >
       </div>
       <div class="chart-container">

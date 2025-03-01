@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     interventionsToRender.forEach((intervention) => {
       const row = document.createElement("tr");
       row.innerHTML = `
-                <td>${intervention.Id}</td>
+                <td>${intervention.id}</td>
                 <td>${intervention.motive}</td>
                 <td>${intervention.status}</td>
                 <td>${intervention.intervenant.nom}</td>
@@ -82,10 +82,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${intervention.type}</td>
                 <td class="actions">
                     <i class="bx bx-edit-alt btn-edit" data-id="${
-                      intervention.Id
+                      intervention.id
                     }"></i>
                     <i class="bx bx-trash btn-remove" data-id="${
-                      intervention.Id
+                      intervention.id
                     }"></i>
                 </td>
             `;
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleEditIntervention(e) {
     const interventionId = Number.parseInt(e.target.getAttribute("data-id"));
-    const intervention = interventions.find((i) => i.Id === interventionId);
+    const intervention = interventions.find((i) => i.id === interventionId);
     if (intervention) {
       editingInterventionId = interventionId;
       openInterventionModal(intervention);

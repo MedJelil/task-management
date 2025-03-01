@@ -71,6 +71,12 @@ exports.deleteIntervention = async (req, res) => {
 
 exports.getStatistics = async (req, res) => {
   try {
+    const [totalClients, totalInterventions, totalIntervenants] =
+      await Promise.all([
+        Client.count(),
+        Intervention.count(),
+        Intervenant.count(),
+      ]);
     // Fetch top 5 clients
     const topClients = await Client.findAll({
       attributes: [
@@ -140,7 +146,16 @@ exports.getStatistics = async (req, res) => {
       group: ["status"],
     });
 
-    res.status(200).json({ topClients, topIntervenants, statusCounts });
+    res
+      .status(200)
+      .json({
+        topClients,
+        topIntervenants,
+        statusCounts,
+        totalClients,
+        totalInterventions,
+        totalIntervenants,
+      });
   } catch (err) {
     console.error("Error fetching top clients and intervenants:", err);
     res.status(500).json({ error: "An error occurred while fetching data." });

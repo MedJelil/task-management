@@ -216,7 +216,42 @@
             </g>
           </svg>
         </label>
-        <div class="profile-icon">👤</div>
+        <div class="profile-container">
+          <div class="profile-icon" id="profileIcon">
+            <!-- If you have an image, use this: -->
+            <!-- <img src="user-avatar.jpg" alt="User"> -->
+
+            <!-- If no image, show initials: -->
+            <span class="initials">J</span>
+          </div>
+
+          <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-header">
+              <div class="user-name">Jelil</div>
+              <div class="user-email">jelil@admin.com</div>
+            </div>
+
+            <div class="dropdown-items">
+              <div class="dropdown-item">
+                <i>👤</i>
+                <span>Profile</span>
+              </div>
+              <div class="dropdown-item">
+                <i>❓</i>
+                <span>Help</span>
+              </div>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <a href="/" style="text-decoration: none"
+              ><div class="dropdown-item logout-item">
+                <i class="bx bx-log-out-circle"></i>
+                <span>Log out</span>
+              </div></a
+            >
+          </div>
+        </div>
       </div>
     </nav>
     <div class="container">

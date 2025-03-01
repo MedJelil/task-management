@@ -1,3 +1,5 @@
+const profileIcon = document.getElementById("profileIcon");
+const dropdownMenu = document.getElementById("dropdownMenu");
 // Dark mode toggle
 const themeToggle = document.getElementById("toggle");
 const body = document.body;
@@ -40,7 +42,19 @@ let clientChart, intervenantChart; // Use let instead of const for re-assignment
 
 async function initializeCharts() {
   // Fetch data from the backend
-  const { topClients, topIntervenants, statusCounts } = await fetchStatistics();
+  const {
+    topClients,
+    topIntervenants,
+    statusCounts,
+    totalClients,
+    totalInterventions,
+    totalIntervenants,
+  } = await fetchStatistics();
+
+  // Update button counts
+  document.getElementById("clientCount").textContent = totalClients;
+  document.getElementById("intervenantCount").textContent = totalIntervenants;
+  document.getElementById("interventionCount").textContent = totalInterventions;
 
   // Prepare chart data
   const clientData = {
@@ -167,3 +181,18 @@ setInterval(async () => {
 
 // Theme color update (unchanged)
 themeToggle.addEventListener("click", updateChartColors);
+
+// Toggle dropdown on click
+profileIcon.addEventListener("click", () => {
+  dropdownMenu.classList.toggle("active");
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", (event) => {
+  if (
+    !profileIcon.contains(event.target) &&
+    !dropdownMenu.contains(event.target)
+  ) {
+    dropdownMenu.classList.remove("active");
+  }
+});
